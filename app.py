@@ -66,7 +66,7 @@ st.markdown("""
     .main { text-align: left; }
     .stMetric { background-color: #f0f2f6; padding: 10px; border-radius: 10px; }
     </style>
-    """, unsafe_allow_input=True)
+    """, unsafe_allow_html=True)
 
 st.title("📐 BIM Ramp Master Pro")
 st.caption("Advanced Calculation Tool | Developed by SALAMA AHMED")
