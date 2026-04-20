@@ -94,7 +94,7 @@ with tabs[0]:
     
     # Net clearance calculation at start
     clearance = round(ceil_elev - slab_thk, 2)
-    if clearance < 2.20:
+    if clearance < 2.50:
         st.error(f"Critical Clearance Alert: {clearance}m (Minimum required is 2.20m)")
     else:
         st.info(f"Safe Clearance: {clearance}m")
