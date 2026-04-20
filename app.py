@@ -89,11 +89,11 @@ with tabs[0]:
     
     st.divider()
     st.subheader("Headroom/Clear Height Verification")
-    ceil_elev = st.number_input("Ceiling Level (Bottom of Slab)", value=3.50)
+    ceil_elev = st.number_input("Ceiling Level (Bottom of Slab)", value=4.00)
     slab_thk = st.number_input("Slab Thickness (m)", value=0.30)
     
     # Net clearance calculation at start
-    clearance = round(ceil_elev - slab_thk, 2)
+    clearance = round(ceil_elev - slab_thk, 2.5)
     if clearance < 2.50:
         st.error(f"Critical Clearance Alert: {clearance}m (Minimum required is 2.20m)")
     else:
