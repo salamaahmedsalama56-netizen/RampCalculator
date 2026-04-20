@@ -57,6 +57,7 @@ class RampCalculator:
         return {"total_length": round(total_length, 2), "landings_count": num_landings}
 
 # --- STREAMLIT UI ---
+import streamlit as st
 st.set_page_config(page_title="BIM Ramp Master Pro", page_icon="📐", layout="centered")
 
 # Custom CSS for Professional Look
@@ -68,7 +69,7 @@ st.markdown("""
     """, unsafe_allow_input=True)
 
 st.title("📐 BIM Ramp Master Pro")
-st.caption("Advanced Calculation Tool | Developed by Lead BIM Engineer")
+st.caption("Advanced Calculation Tool | Developed by SALAMA AHMED")
 
 calc = RampCalculator()
 tabs = st.tabs(["🚗 Car Ramp (Length)", "📊 Car Ramp (Height)", "♿ ADA/Pedestrian"])
