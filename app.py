@@ -19,10 +19,12 @@ class RampCalculator:
             remaining_height = height - f_h
             # Using 18% for the main part in this specific case as per your logic
             ramp_length = (f_len * 2) + (remaining_height / 0.18)
+        elif slope == 0.1:
+            f_len, f_h = 3 * 2, (2.4 * 0.1) * 2
+            ramp_height = f_h + (length - f_len) * 0.1
         elif slope == 0.08:
-            f_len, f_h = 4.0, (4.0 * 0.04) * 2
-            remaining_height = height - f_h
-            ramp_length = (f_len * 2) + (remaining_height / slope)
+            f_len, f_h = 2.4 * 2, (2.4 * 0.04) * 2
+            ramp_height = f_h + (length - f_len) * 0.08
         else:
             # General case for any manual slope input
             ramp_length = height / slope
@@ -41,7 +43,7 @@ class RampCalculator:
             ramp_height = f_h + (length - f_len) * 0.18
         elif slope == 0.1:
             f_len, f_h = 3 * 2, (2.4 * 0.1) * 2
-            ramp_height = f_h + (length - f_len) * 0.08
+            ramp_height = f_h + (length - f_len) * 0.1
         elif slope == 0.08:
             f_len, f_h = 2.4 * 2, (2.4 * 0.04) * 2
             ramp_height = f_h + (length - f_len) * 0.08
