@@ -14,7 +14,7 @@ class RampCalculator:
             f_len, f_h = 3.6, (3.6 * 0.06) * 2
             remaining_height = height - f_h
             ramp_length = (f_len * 2) + (remaining_height / slope)
-        elif slope >= 0.15:
+        elif slope > 0.15:
             f_len, f_h = 5.0, (5.0 * 0.15) * 2
             remaining_height = height - f_h
             # Using 18% for the main part in this specific case as per your logic
@@ -40,7 +40,7 @@ class RampCalculator:
         if slope == 0.12:
             f_len, f_h = 3.6 * 2, (3.6 * 0.06) * 2
             ramp_height = f_h + (length - f_len) * 0.12
-        elif slope >= 0.15:
+        elif slope > 0.15:
             f_len, f_h = 5.0 * 2, (5.0 * 0.15) * 2
             ramp_height = f_h + (length - f_len) * 0.18
         elif slope == 0.1:
@@ -95,63 +95,62 @@ with tabs[0]:
     st.success(f"**Total Required Length: {res_l} m**")
     
     # --- Section Header ---
-st.divider()
-st.subheader("Headroom/Clear Height Verification")
+    st.divider()
+    st.subheader("Headroom/Clear Height Verification")
 
-# --- Inputs ---
-col1, col2 = st.columns(2)
+    # --- Inputs ---
+    col1, col2 = st.columns(2)
 
-with col1:
-    ceil_elev = st.number_input("Ceiling Level (Bottom of Slab) [m]", value=4.00)
-    start_ramp_elev = st.number_input("Start Ramp Floor Level [m]", value=0.00)
+    with col1:
+        ceil_elev = st.number_input("Ceiling Level (Bottom of Slab) [m]", value=4.00)
+        start_ramp_elev = st.number_input("Start Ramp Floor Level [m]", value=0.00)
 
-with col2:
-    slab_thk = st.number_input("Upper Slab Thickness [m]", value=0.30)
-    slope_pct = st.number_input("Ramp Slope [%]", value=15.0)
+    with col2:
+        slab_thk = st.number_input("Upper Slab Thickness [m]", value=0.30)
+        slope_pct = st.number_input("Ramp Slope [%]", value=15.0)
 
-# Convert percentage to decimal (e.g., 15% -> 0.15)
-slope = slope_pct / 100
+    # Convert percentage to decimal (e.g., 15% -> 0.15)
+    slope = slope_pct / 100
 
-# --- 1. Initial Clearance Check ---
-# Net height = (Ceiling elevation) - (Floor elevation) - (Slab thickness of the roof above)
-net_clearance = round(ceil_elev - start_ramp_elev - slab_thk, 2)
+    # --- 1. Initial Clearance Check ---
+    # Net height = (Ceiling elevation) - (Floor elevation) - (Slab thickness of the roof above)
+    net_clearance = round(ceil_elev - start_ramp_elev - slab_thk, 2)
 
-if net_clearance < 2.50:
-    st.error(f"⚠️ Critical Clearance Alert: {net_clearance}m (Minimum required: 2.50m)")
-else:
-    st.success(f"✅ Safe Clearance: {net_clearance}m")
-
-# --- 2. Transition Zones & Required Length Logic ---
-target_h = 2.50 # The standard minimum clear height
-
-if slope <= 0:
-    st.warning("Slope must be greater than 0%")
-else:
-    # Logic for Transition Zones (Standard practice for parking ramps)
-    if slope == 0.12:
-        f_len = 3.6
-        # Transition slope is usually half of the main slope
-        transition_h = f_len * (slope / 2) 
-        needed_remaining_h = target_h - transition_h
-        ramp_len_req = f_len + (needed_remaining_h / slope)
-        
-    elif slope >= 0.15:
-        f_len = 5.0
-        transition_h = f_len * (0.05) # Specific case for 15% slope
-        needed_remaining_h = target_h - transition_h
-        ramp_len_req = f_len + (needed_remaining_h / slope)
-        
-    elif slope == 0.08:
-        f_len = 4.0
-        transition_h = f_len * (0.04)
-        needed_remaining_h = target_h - transition_h
-        ramp_len_req = f_len + (needed_remaining_h / slope)
-        
+    if net_clearance < 2.50:
+        st.error(f"⚠️ Critical Clearance Alert: {net_clearance}m (Minimum required: 2.50m)")
     else:
-        # General simple calculation without specific transition rules
-        ramp_len_req = target_h / slope
+        st.success(f"✅ Safe Clearance: {net_clearance}m")
 
-    st.info(f"**Required Horizontal Distance to reach 2.5m clearance:** {round(ramp_len_req, 2)} meters")
+    # --- 2. Transition Zones & Required Length Logic ---
+    target_h = 2.50 # The standard minimum clear height
+    if slope <= 0:
+        st.warning("Slope must be greater than 0%")
+    else:
+        # Logic for Transition Zones (Standard practice for parking ramps)
+        if slope == 0.12:
+            f_len = 3.6
+            # Transition slope is usually half of the main slope
+            transition_h = f_len * (slope / 2) 
+            needed_remaining_h = target_h - transition_h
+            ramp_len_req = f_len + (needed_remaining_h / slope)
+        
+        elif slope >= 0.15:
+            f_len = 5.0
+            transition_h = f_len * (0.05) # Specific case for 15% slope
+            needed_remaining_h = target_h - transition_h
+            ramp_len_req = f_len + (needed_remaining_h / slope)
+        
+        elif slope == 0.08:
+            f_len = 4.0
+            transition_h = f_len * (0.04)
+            needed_remaining_h = target_h - transition_h
+            ramp_len_req = f_len + (needed_remaining_h / slope)
+        
+        else:
+            # General simple calculation without specific transition rules
+            ramp_len_req = target_h / slope
+
+        st.info(f"**Required Horizontal Distance to reach 2.5m clearance:** {round(ramp_len_req, 2)} meters")
 
 # --- TAB 2: Height Calculation ---
 with tabs[1]:
